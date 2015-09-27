@@ -39,12 +39,17 @@ void PneuDuino::update()
   while(!foundNode){
     digitalWrite(LED, HIGH);
     checkAddressSpace();
+    delay(500);
   }
 
   if ( !digitalRead(CONNECT_BTN) ){
     digitalWrite(LED, HIGH);
+    reset();
     checkAddressSpace();
+    delay(500);
   }
+
+  if(foundNode) digitalWrite(LED, LOW);
 
   checkNodes(); // request data from all available nodes
 }
@@ -89,12 +94,14 @@ int PneuDuino::readPressure(int address)
 void PneuDuino::setLED(int pos, int value)
 {  
   value = constrain(value, 0, 4095);
+  pos--;
+  pos = constrain(pos, 0, 11);
   leds.setPWM(LEDmap[pos], 0, value);
 }
 
 void PneuDuino::setAllLEDs(int value)
 {
-  for(int i = 0; i <= 12; i++){
+  for(int i = 0; i < 12; i++){
     leds.setPWM(LEDmap[i], 0, value);
   }
 }
@@ -102,7 +109,7 @@ void PneuDuino::setAllLEDs(int value)
 int PneuDuino::getNodeAmount()
 {
   int amount = 0;
-  for(int i = 0; i <= 12; i++){
+  for(int i = 0; i < 12; i++){
     if (nodes[i] == 1) amount++;
   }
   return amount;
@@ -115,15 +122,14 @@ int PneuDuino::getNodeAmount()
 
 void PneuDuino::checkNodes(void)
 {
-  for (int i = 0; i <= 12; i++)
+  for (int i = 0; i < 12; i++)
   {
     if (nodes[i] == 1){
+      // this is where to distinguish between IO and valve. send different requests accordingly.
       Wire.requestFrom(i, 1);
-      
       while (Wire.available())
       {
         pressure[i] = int( Wire.read() );
-        //analogWrite(LED, buttonState);
       }
     }
   }
@@ -137,7 +143,7 @@ void PneuDuino::checkAddressSpace()
   // reset foundNode
   foundNode = false;
   
-  for (int address = 0; address <= 12; address++)
+  for (int address = 0; address < 12; address++)
   {
     Wire.requestFrom(byte(address), 1);
     
@@ -164,7 +170,18 @@ void PneuDuino::checkAddressSpace()
       }
     }
   }
-  digitalWrite(LED, LOW);
+  if (foundNode) digitalWrite(LED, LOW);
+}
+
+void PneuDuino::reset()
+{
+  for (int i = 0; i < 12; i++)
+  {
+    foundNode = false;
+    nodes[i] = 0;
+    pressure[i] = 0;
+    setAllLEDs(0);
+  }
 }
 
 /****************************
