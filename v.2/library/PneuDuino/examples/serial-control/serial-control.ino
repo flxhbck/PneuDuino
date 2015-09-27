@@ -1,4 +1,4 @@
-/*************************************************************************
+/**********************************************************************************
 
     ____  ____     ___  __ __  ___    __ __  ____  ____    ___  
    |    \|    \   /  _]|  |  ||   \  |  |  ||    ||    \  /   \ 
@@ -11,7 +11,16 @@
    PneuDuino is a toolkit for controlling inflatable actuators
    and prototyping interactions with shape-changing systems.
 
-   Functions:
+   Every slave board has a RGB led on the top right corner that communicates
+   the state of this board.
+
+   GREEN - baord running and connecting
+   RED - board running, but not connected
+   BLUE - board not running yet (usually after reset or power) or broken :(
+
+
+   The library offers functions that allow for controlling the valves and 
+   accessing the pressure sensor :
 
    begin() - should be called at the beginning of setup()
    update() - should be called at the beginning of loop()
@@ -19,15 +28,10 @@
    void in(address, side) - inflates bag of board with defined address
    void out(address, side) - deflates bag of board with defined address
    int getPressure(address) - returns pressure of bag at defined address. 
-                              Notice that a non-deflated bag still experiences athmospheric 
-                              pressure and thus does not return 0.
+                              Notice that a non-deflated bag still experiences 
+                              athmospheric pressure and thus does not return 0.
 
-   TODO:
-   int getDialState(address) - returns the position of the dial at defined address
-   bool getButtonState(address, side) - returns the state of the button at defined address
-   
-
-*****************************************************************************/
+**********************************************************************************/
 
 
 #include <Wire.h>

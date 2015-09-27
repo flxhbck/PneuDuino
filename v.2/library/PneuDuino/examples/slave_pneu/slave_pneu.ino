@@ -1,3 +1,23 @@
+/**********************************************************************************
+
+    ____  ____     ___  __ __  ___    __ __  ____  ____    ___  
+   |    \|    \   /  _]|  |  ||   \  |  |  ||    ||    \  /   \ 
+   |  o  )  _  | /  [_ |  |  ||    \ |  |  | |  | |  _  ||     |
+   |   _/|  |  ||    _]|  |  ||  D  ||  |  | |  | |  |  ||  O  |
+   |  |  |  |  ||   [_ |  :  ||     ||  :  | |  | |  |  ||     |
+   |  |  |  |  ||     ||     ||     ||     | |  | |  |  ||     |
+   |__|  |__|__||_____| \__,_||_____| \__,_||____||__|__| \___/ 
+
+   PneuDuino is a toolkit for controlling inflatable actuators
+   and prototyping interactions with shape-changing systems.
+
+   This is the code that runs on each pneumatic control board.
+   It is here for reference and future improvements of functionality.
+   DON'T TRY TO USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING!!
+   (sorry for screaming)
+
+**********************************************************************************/
+
 #include <Wire.h>
 
 #define STAT_R 4
