@@ -33,17 +33,40 @@
 #include <Wire.h>
 #include <PneuDuino.h>
 
+char serialCommand = ' ';
 PneuDuino air = PneuDuino();
 
 void setup() {
   Serial.begin(9600);
   air.begin(); // initialize the pneuDuino library. DON'T MOVE THIS!
-  /* YOUR CODE HERE: */
+  /* YOUR SETUP-CODE HERE: */
+
   
 }
 
+
 void loop() {
   air.update(); // update the pneuduino library. DONT MOVE THIS!
+
+  if (Serial.available() > 0) {     // use this to trigger things
+    serialCommand = Serial.read();  // just send one letter            
+    Serial.print("received: ");
+    Serial.println(serialCommand);    
+  }
+
   /* YOUR CODE HERE: */
-  
+
+  /* 
+   *  This is just an example of how to trigger a valve with your keyboard.
+   *  Just send A through the Serial Monitor and the valve opens
+   *  Send a different letter and the valve closes again.
+   *  Change this code as you like.
+   */
+   
+  if (serialCommand == 'A'){
+    air.in(10, RIGHT);
+  } else {
+    air.out(10, RIGHT);
+  }
+
 }
