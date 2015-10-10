@@ -91,6 +91,20 @@ int PneuDuino::readPressure(int address)
   return pressure[address];
 }
 
+bool PneuDuino::readButton(int number)
+{
+  if (nodes[12] == 0) return 0;
+  if (number == 0) return !io_btn2;
+  if (number == 1) return !io_btn1;
+  return 0;
+}
+
+int PneuDuino::readPot()
+{
+  if (nodes[12] == 0) return -1;
+  return io_pot;
+}
+
 void PneuDuino::setLED(int pos, int value)
 {  
   value = constrain(value, 0, 4095);
@@ -101,7 +115,7 @@ void PneuDuino::setLED(int pos, int value)
 
 void PneuDuino::setAllLEDs(int value)
 {
-  for(int i = 0; i < 12; i++){
+  for(int i = 1; i <= 12; i++){
     leds.setPWM(LEDmap[i], 0, value);
   }
 }
@@ -109,7 +123,7 @@ void PneuDuino::setAllLEDs(int value)
 int PneuDuino::getNodeAmount()
 {
   int amount = 0;
-  for(int i = 0; i < 12; i++){
+  for(int i = 1; i <= 12; i++){
     if (nodes[i] == 1) amount++;
   }
   return amount;
@@ -122,7 +136,7 @@ int PneuDuino::getNodeAmount()
 
 void PneuDuino::checkNodes(void)
 {
-  for (int i = 0; i < 12; i++)
+  for (int i = 1; i < 12; i++)
   {
     if (nodes[i] == 1){
       // this is where to distinguish between IO and valve. send different requests accordingly.
@@ -133,6 +147,18 @@ void PneuDuino::checkNodes(void)
       }
     }
   }
+
+  // check for 1 allowed IO board
+  if ( nodes[12] == 1 ) {
+    Wire.requestFrom(12, 1);
+    while (Wire.available())
+    {
+      byte inByte = byte( Wire.read() );
+      io_btn1 = bitRead(inByte, 0);
+      io_btn2 = bitRead(inByte, 1);
+      io_pot = int( inByte >> 2 );
+    }
+  } 
 }
 
 
@@ -143,7 +169,7 @@ void PneuDuino::checkAddressSpace()
   // reset foundNode
   foundNode = false;
   
-  for (int address = 0; address < 12; address++)
+  for (int address = 1; address <= 12; address++)
   {
     Wire.requestFrom(byte(address), 1);
     
@@ -175,14 +201,21 @@ void PneuDuino::checkAddressSpace()
 
 void PneuDuino::reset()
 {
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i <= 12; i++)
   {
     foundNode = false;
     nodes[i] = 0;
     pressure[i] = 0;
     setAllLEDs(0);
   }
+
+  io_btn1 = false;
+  io_btn2 = false;
+  io_pot = -1;
 }
+
+
+
 
 /****************************
  * THINGS TO BE IMPLEMENTED *

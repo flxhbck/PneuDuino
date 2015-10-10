@@ -18,6 +18,8 @@
    RED - board running, but not connected
    BLUE - board not running yet (usually after reset or power) or broken :(
 
+   The boards addresses range from 1-12. 12 is reserved for IO Boards.
+   There can ONLY BE ONE IO BOARD per system.
 
    The library offers functions that allow for controlling the valves and 
    accessing the pressure sensor :
@@ -27,9 +29,11 @@
 
    void in(address, side) - inflates bag of board with defined address
    void out(address, side) - deflates bag of board with defined address
-   int getPressure(address) - returns pressure of bag at defined address. 
+   int readPressure(address) - returns pressure of bag at defined address. 
                               Notice that a non-deflated bag still experiences 
                               athmospheric pressure and thus does not return 0.
+   bool readButton(side) - returns button state of IO Board. 0 is top, 1 is bottom.
+   int readPot() - returns potentiometer value of IO Board. 0 - 15.
 
 **********************************************************************************/
 

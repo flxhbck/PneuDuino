@@ -36,6 +36,9 @@ class PneuDuino {
   void in(int address, int side);
   void out(int address, int side);
   int readPressure(int address);
+  bool readButton(int number);
+  int readPot();
+
   void reset(void);
 
   int getNodeAmount();
@@ -56,14 +59,19 @@ class PneuDuino {
  private:
   Adafruit_PWMServoDriver leds;
   int LEDmap[12] = {8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7};
-  int nodes[12] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-  int pressure[12] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  bool touched[12] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  char states[12] = {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'} ;
+  int nodes[13] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  int pressure[13] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+  bool touched[13] =  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  char states[13] = {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'} ;
 
   void checkNodes(void);
   void checkAddressSpace(void);
   bool foundNode = false;
+
+  bool io_btn1 = false;
+  bool io_btn2 = false;
+  int io_pot = -1;
 
  };
 
