@@ -25,7 +25,7 @@ PneuDuino::PneuDuino()
 void PneuDuino::begin(void)
 {
   pinMode(LED, OUTPUT);
-  pinMode(CONNECT_BTN, INPUT);
+  pinMode(CONNECT_BTN, INPUT_PULLUP);
 
   leds.begin();  // initialize LED driver
   leds.setPWMFreq(1600);  // maximum PWM frequency
@@ -41,6 +41,7 @@ void PneuDuino::update()
     checkAddressSpace();
     delay(500);
   }
+
 
   if ( !digitalRead(CONNECT_BTN) ){
     digitalWrite(LED, HIGH);
