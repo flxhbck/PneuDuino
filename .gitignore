@@ -4,3 +4,5 @@ v.2/library/PneuDuino symlink
 v.2/library/PneuDuino/README.md
 
 *.b#1
+
+*.epf
