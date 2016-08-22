@@ -17,3 +17,17 @@ v.2/library/PneuDuino/README.md
 *.GTS
 *.TXT
 *.dxf
+
+*.epf
+
+*.xlsx
+
+v.2/Pneumatic/bom
+
+*.lck
+
+*.csv
+
+*.html
+
+*.epf
