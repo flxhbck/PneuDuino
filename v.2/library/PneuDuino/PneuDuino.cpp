@@ -141,10 +141,15 @@ void PneuDuino::checkNodes(void)
   {
     if (nodes[i] == 1){
       // this is where to distinguish between IO and valve. send different requests accordingly.
-      Wire.requestFrom(i, 1);
+      Wire.requestFrom(i, 2);
       while (Wire.available())
-      {
-        pressure[i] = int( Wire.read() );
+      { 
+        byte lowByte = Wire.read();
+        // Serial.print(lowByte);
+        byte highByte = Wire.read();
+        // Serial.print(" - ");
+        // Serial.println(highByte);
+        pressure[i] = int( (highByte << 8) + lowByte );
       }
     }
   }

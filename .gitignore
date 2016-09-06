@@ -31,3 +31,9 @@ v.2/Pneumatic/bom
 *.html
 
 *.epf
+
+*.epf
+
+.DS_Store
+
+v.2/IO/eagle.epf

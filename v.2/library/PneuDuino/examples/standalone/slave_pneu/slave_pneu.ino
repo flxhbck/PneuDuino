@@ -178,9 +178,11 @@ void receiveEvent(int howMany)
 void requestEvent()
 {
   madeConnection = true;
-  
-  byte package;
-  package = analogRead(PRESSURE);
+
+  byte pressureBuffer[2];
+  pressureBuffer[0] = lowByte(analogRead(PRESSURE));
+  pressureBuffer[1] = highByte(analogRead(PRESSURE));
+
+  Wire.write( pressureBuffer, 2);
     
-  Wire.write(package);
 }
